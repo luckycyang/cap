@@ -1,0 +1,10 @@
+.devenv
+.bsp
+.metals
+.scala-build
+target
+.bloop
+out
+project
+.vscode
+test_run_dir
