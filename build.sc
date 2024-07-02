@@ -9,4 +9,9 @@ object cap extends RootModule with ScalaModule {
 
   def scalacPluginIvyDeps = Agg(ivy"org.chipsalliance:::chisel-plugin:6.4.0")
   // def mainClass = Some("Main")
+  object test extends ScalaTests with TestModule.ScalaTest {
+    def ivyDeps = Agg(
+      ivy"org.scalatest::scalatest:3.2.9"
+    )
+  }
 }
