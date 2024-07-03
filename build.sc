@@ -13,6 +13,7 @@ import mill.bsp._
 object cap extends SbtModule { m =>
   override def millSourcePath = os.pwd
   override def scalaVersion = "2.13.14"
+  override def mainClass = Some("TopMain")
   override def scalacOptions = Seq(
     "-language:reflectiveCalls",
     "-deprecation",

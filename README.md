@@ -32,4 +32,4 @@ mill cap.test
 
 **运行与构建**
 
-他两都行，`mill` 在多 `object` 时请在 `build.sc` 定义主入口 `mainClass`
+他两都行，`mill` 在多 `object` 时请在 `build.sc` 定义主要入口 `mainClass`, 或者使用 `mill %NAME%.runMain %mainClass% [args]` 来运行特定的 `object`
