@@ -1,9 +1,9 @@
 import chisel3.stage.ChiselGeneratorAnnotation
 import circt.stage.{CIRCTTarget, CIRCTTargetAnnotation, ChiselStage}
 import firrtl.{AnnotationSeq, EmittedVerilogCircuitAnnotation}
-import firrtl.options.{Dependency, PhaseManager}
 import chisel3._
-import core.OperationTestSpec
+import core.TimingGeneration
+
 object TopMain extends App {
     def parseArgs(key: String, args: Array[String]): String = {
       var value = ""
@@ -17,7 +17,7 @@ object TopMain extends App {
       require(value != "")
       value.substring(key.length() + 1)
     }
-    generateVerilog(new OperationTestSpec)
+    generateVerilog(new TimingGeneration)
 }
 
 object generateVerilog {

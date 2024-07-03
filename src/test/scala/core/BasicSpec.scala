@@ -7,7 +7,6 @@ class BasicTestSpec extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "MyModule"
   // test class body here
   it should "pass in this simple env" in {
-    println("\u001B[32m\n**************\n基本环境测试通过......\n**************")
     test(new OperationTestSpec).withAnnotations(Seq(WriteVcdAnnotation)) {
       dut => {
         step(1)
@@ -18,8 +17,28 @@ class BasicTestSpec extends AnyFlatSpec with ChiselScalatestTester {
           step(1)
           dut.sel.poke(false.B)
           step(1)
+        }
       }
+    }
+  }
+  it should "generate some timing" in {
+    test(new TimingGeneration).withAnnotations(Seq(WriteVcdAnnotation))  {
+      dut =>
+      {
+        TimingGenerationTestSpec(dut)
       }
+    }
+  }
+  
+  def TimingGenerationTestSpec(dut: TimingGeneration) {
+    step(1)
+    for (i <- 0 until 16) {
+      if (i == 6) {
+        dut.reset.poke(true.B)
+        step()
+        dut.reset.poke(false.B)
+      }
+      step(1)
     }
   }
 }
