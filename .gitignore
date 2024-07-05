@@ -9,3 +9,4 @@ project
 .vscode
 test_run_dir
 build
+.direnv
