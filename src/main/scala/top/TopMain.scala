@@ -17,7 +17,7 @@ object TopMain extends App {
       require(value != "")
       value.substring(key.length() + 1)
     }
-    circt.stage.ChiselStage.emitSystemVerilogFile(new core.Execute, Array("-td", "build"), Array("--strip-debug-info"))
+    circt.stage.ChiselStage.emitSystemVerilogFile(new core.CPU, Array("-td", "build"), Array("--strip-debug-info"))
     
 }
 

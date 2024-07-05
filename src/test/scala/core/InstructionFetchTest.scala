@@ -11,21 +11,21 @@ class InstructionFetchTest extends AnyFlatSpec with ChiselScalatestTester {
       val entry = 0x1000
       var pre   = entry
       var cur   = pre
-      c.io.instructionValid.poke(true.B)
+      c.io.instruction_valid.poke(true.B)
       var x = 0
       for (x <- 0 to 100) {
         Random.nextInt(2) match {
           case 0 => // no jump
             cur = pre + 4
-            c.io.jmpFlag.poke(false.B)
+            c.io.jump_flag_id.poke(false.B)
             c.clock.step()
-            c.io.instructionAddr.expect(cur)
+            c.io.instruction_address.expect(cur)
             pre = pre + 4
           case 1 => // jump
-            c.io.jmpFlag.poke(true.B)
-            c.io.jmpAddr.poke(entry)
+            c.io.jump_flag_id.poke(true.B)
+            c.io.jump_address_id.poke(entry)
             c.clock.step()
-            c.io.instructionAddr.expect(entry)
+            c.io.instruction_address.expect(entry)
             pre = entry
         }
       }
