@@ -3,10 +3,6 @@ import chisel3._
 import chisel3.util._
 
 
-
-
-
-
 class BasicModule extends Module {
   val in = IO(Input(Bool()))
   val out = IO(Bool())

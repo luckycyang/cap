@@ -2,7 +2,7 @@ import chisel3.stage.ChiselGeneratorAnnotation
 import circt.stage.{CIRCTTarget, CIRCTTargetAnnotation, ChiselStage}
 import firrtl.{AnnotationSeq, EmittedVerilogCircuitAnnotation}
 import chisel3._
-import core.TimingGeneration
+
 
 object TopMain extends App {
     def parseArgs(key: String, args: Array[String]): String = {
@@ -17,7 +17,8 @@ object TopMain extends App {
       require(value != "")
       value.substring(key.length() + 1)
     }
-    generateVerilog(new TimingGeneration)
+    circt.stage.ChiselStage.emitSystemVerilogFile(new core.Execute, Array("-td", "build"), Array("--strip-debug-info"))
+    
 }
 
 object generateVerilog {
@@ -25,7 +26,7 @@ object generateVerilog {
     (new ChiselStage)
       .execute(
         Array("--target", "systemverilog") ++ args ++ Array("-td", "build"),
-        ChiselGeneratorAnnotation(() => gen) +: annotations
+        ChiselGeneratorAnnotation(() => gen) +: annotations 
       )
       .collectFirst {
         case EmittedVerilogCircuitAnnotation(a) => a
