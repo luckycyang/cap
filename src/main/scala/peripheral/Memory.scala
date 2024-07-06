@@ -11,8 +11,12 @@ class RAMBundle extends Bundle {
   val write_strobe = Input(Vec(Settings.WordSize, Bool()))
   val read_data    = Output(UInt(Settings.DataWidth))
 }
-// The purpose of this module is to help the synthesis tool recognize
-// our memory as a Block RAM template
+
+/**
+  * 主Ram块
+  *
+  * @param capacity
+  */
 class BlockRAM(capacity: Int) extends Module {
   val io = IO(new Bundle {
     val read_address  = Input(UInt(Settings.AddrWidth))
@@ -37,7 +41,11 @@ class BlockRAM(capacity: Int) extends Module {
   io.read_data       := mem.read((io.read_address >> 2.U).asUInt, true.B).asUInt
   io.debug_read_data := mem.read((io.debug_read_address >> 2.U).asUInt, true.B).asUInt
 }
-
+/**
+  * 相比 BlockRAM, 这里多了用于调试的读取线
+  *
+  * @param capacity
+  */
 class Memory(capacity: Int) extends Module {
   val io = IO(new Bundle {
     val bundle = new RAMBundle

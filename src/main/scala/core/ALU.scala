@@ -4,9 +4,13 @@ import chisel3._
 import chisel3.util._
 import settings.Settings
 
+/**
+  * Alu 功能字的枚举
+  */
 object ALUFunctions extends ChiselEnum {
   val zero, add, sub, sll, slt, xor, or, and, srl, sra, sltu = Value
 }
+
 
 class ALU extends Module {
   val io = IO(new Bundle {

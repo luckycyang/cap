@@ -11,20 +11,50 @@ object Registers extends Enumeration {
 
 class RegisterFile extends Module {
   val io = IO(new Bundle {
+    /**
+      * 写使能
+      */
     val write_enable  = Input(Bool())
+    /**
+      * 写地址
+      */
     val write_address = Input(UInt(Settings.PhysicalRegisterAddrWidth))
+    /**
+      * 写数据
+      */
     val write_data    = Input(UInt(Settings.DataWidth))
 
+    /**
+      * 寄存器1地址
+      */
     val read_address1 = Input(UInt(Settings.PhysicalRegisterAddrWidth))
+    /**
+      * 寄存器2地址
+      */
     val read_address2 = Input(UInt(Settings.PhysicalRegisterAddrWidth))
+    /**
+      * 读数据1
+      */
     val read_data1    = Output(UInt(Settings.DataWidth))
+    /**
+      * 读数据2
+      */
     val read_data2    = Output(UInt(Settings.DataWidth))
 
+    /**
+      * 目前调试专用
+      */
     val debug_read_address = Input(UInt(Settings.PhysicalRegisterAddrWidth))
     val debug_read_data    = Output(UInt(Settings.DataWidth))
   })
+  /**
+    * 寄存组
+    */
   val registers = RegInit(VecInit(Seq.fill(Settings.PhysicalRegisters)(0.U(Settings.DataWidth))))
 
+  /**
+    * x0 恒为 0
+    */
   when(!reset.asBool) {
     when(io.write_enable && io.write_address =/= 0.U) {
       registers(io.write_address) := io.write_data

@@ -7,20 +7,60 @@ import chisel3.util._
   * 记录设计的参数
   */
 object Settings {
+  /**
+    * 地址比特
+    *
+    * @return
+    */
   def AddrBits = 32 // 地址字长
+  /**
+    * 地址字长
+    *
+    * @return
+    */
   def AddrWidth = AddrBits.W // 机器字长
 
+  /**
+    * 指令比特
+    *
+    * @return
+    */
   def InstructionBits = 32
+  /**
+    * 指令字长
+    *
+    * @return
+    */
   def InstructionWidth = InstructionBits.W
+  /**
+    * 数据比特
+    *
+    * @return
+    */
   def DataBits = 32
+  /**
+    * 数据字长
+    *
+    * @return
+    */
   def DataWidth = DataBits.W
+  /**
+    * 字节比特
+    *
+    * @return
+    */
   def ByteBits = 8
+  /**
+    * 字节字长
+    *
+    * @return
+    */
   def ByteWidth = ByteBits.W
   /**
-    * 存储器是以 Byte 为单元的，机器需要一次性读取 DataBits / ByteBits
-    * 比如机器字长 32bit, 也就是 4Byte, 我们将内存对齐， 实际上 0x00 和 0x01 访问的地址是一致的
-    * 0b00000 和0b00001 访问的是 0b000 * 32bit = 0b00 * 4Byte, 低二位丢弃
-    *
+    * 字节颗粒度
+    * 例如 32 位机的颗粒度是 4, 64 位的颗粒度是 8
+    * 因为储存器一般的一颗粒是 8Bits = 1Byte
+    * 4 颗粒的寻址通常是 (Addr >> 2) 表示取 00 01 10 11 四个 Byte为一个数据字
     * @return 
     */
   def WordSize = Math.ceil(DataBits / ByteBits).toInt
@@ -29,6 +69,11 @@ object Settings {
     * RISCV 就是32个寄存器
     */
   def PhysicalRegisters = 32
+  /**
+    * 寄存器地址比特
+    *
+    * @return
+    */
   def PhysicalRegisterAddrBits = log2Ceil(PhysicalRegisters)
   /**
     * 对寄存器数的地址线计算 | log2(PhysicalRegisters) |
@@ -44,18 +89,23 @@ object Settings {
     */
   def CSRRegisterAddrBits = 12
   /**
-    * 直接表示
+    * CSR寄存器地址字长
     *
     * @return
     */
   def CSRRegisterAddrWidth = CSRRegisterAddrBits.W
 
   /**
-    * 中断标志位
+    * 中断标志位比特
     *
     * @return
     */
   def InterruptFlagBits = 32
+  /**
+    * 中断标志字长 - 直接表示
+    *
+    * @return
+    */
   def InterruptFlagWidth = InstructionBits.W
 
   /**
@@ -64,6 +114,11 @@ object Settings {
     * @return
     */
   def HoldStateBits = 32
+  /**
+    * 保存状态字长 - 直接表示
+    *
+    * @return
+    */
   def StallStateWidth = HoldStateBits.W
 
   /**
@@ -72,6 +127,11 @@ object Settings {
     * @return
     */
   def MemorySizeInBytes = 32768
+  /**
+    * 内存地址空间
+    *
+    * @return
+    */
   def MemorySizeInWords = MemorySizeInBytes / 4
 
   /**
@@ -93,7 +153,17 @@ object Settings {
     * @return
     */
   def MasterDeviceCount = 1
+  /**
+    * 从机数量
+    *
+    * @return
+    */
   def SlaveDeviceCount = 8
+  /**
+    * 从机控制比特 - 编码表示
+    *
+    * @return
+    */
   def SlaveDeviceCountBits = log2Ceil(Settings.SlaveDeviceCount)
   
 

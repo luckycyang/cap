@@ -3,6 +3,10 @@ package core
 import chisel3._
 import chisel3.util._
 
+/**
+  * ALU 控制模块
+  * 根据 opcode 和 funct3,funct7 给ALU提供功能字
+  */
 class ALUControl extends Module {
   val io = IO(new Bundle {
     val opcode = Input(UInt(7.W))
@@ -12,9 +16,21 @@ class ALUControl extends Module {
     val alu_funct = Output(ALUFunctions())
   })
 
+  /**
+    * 默认就是提供 zero
+    */
   io.alu_funct := ALUFunctions.zero
 
+  /**
+    * 提供枚举opcode判别指令类型, 具有 funct 功能字的指令也就是R I S B 型指令需要枚举功能字段判别
+    * 其中 R 型指令根据 funct3, funct7 判断
+    * I,S,B型指令通过 funct3 判断
+    * U, J 型指令可直接又opcode得出指令类型和指令
+    */
   switch(io.opcode) {
+    /**
+      * I 型指令只通过 funct3 判断具体那条指令
+      */
     is(InstructionTypes.I) {
       io.alu_funct := MuxLookup(
         io.funct3,

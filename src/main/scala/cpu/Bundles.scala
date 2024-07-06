@@ -4,8 +4,11 @@ import chisel3._
 import peripheral.RAMBundle
 import settings.Settings
 
-// CPUBundle serves as the communication interface for data exchange between
-// the CPU and peripheral devices, such as memory.
+/**
+  * CPU 线路
+  * 这里需要外接 ROM 和RAM, 其中指令有效位由外部控制器控制
+  * debug 是用于测试的字段线路，独立与控制信号，随时去除
+  */
 class CPUBundle extends Bundle {
   val instruction_address = Output(UInt(Settings.AddrWidth))
   val instruction         = Input(UInt(Settings.DataWidth))
