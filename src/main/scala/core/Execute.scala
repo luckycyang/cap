@@ -5,6 +5,10 @@ import chisel3.util.Cat
 import chisel3.util.MuxLookup
 import settings.Settings
 
+/**
+  * 执行模块，为组合逻辑
+  *
+  */
 class Execute extends Module {
   val io = IO(new Bundle {
     val instruction         = Input(UInt(Settings.InstructionWidth))
