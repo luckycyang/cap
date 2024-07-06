@@ -28,4 +28,12 @@ class BaseTest extends AnyFlatSpec with ChiselScalatestTester {
     }
   }
 
+  it should "InstructionROM" in {
+    test(new InstructionROM("")).withAnnotations(Seq(WriteVcdAnnotation)) {
+      dut => {
+        
+      }
+    }
+  }
+
 }
