@@ -3,6 +3,7 @@ import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 import peripheral._ 
 import chisel3.util.Fill
+import firrtl.annotations.MemoryLoadFileType
 class BaseTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Peripheral Test"
   it should "BlockRam" in {
@@ -29,9 +30,13 @@ class BaseTest extends AnyFlatSpec with ChiselScalatestTester {
   }
 
   it should "InstructionROM" in {
-    test(new InstructionROM("")).withAnnotations(Seq(WriteVcdAnnotation)) {
+    // rv32i-apps/target/app
+    test(new InstructionROM("target/apps/hello.hex")).withAnnotations(Seq(WriteVcdAnnotation)) {
       dut => {
-        
+        for (i <- 0 to 64) {
+          dut.io.address.poke(i.U)
+          step(1)
+        }
       }
     }
   }

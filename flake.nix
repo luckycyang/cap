@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     systems.url = "github:nix-systems/default";
+    rust-overlay.url = "github:oxalica/rust-overlay";
     devenv.url = "github:cachix/devenv";
     devenv.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -11,7 +12,7 @@
     extra-substituters = "https://devenv.cachix.org";
   };
 
-  outputs = { self, nixpkgs, devenv, systems, ... } @ inputs:
+  outputs = { self, nixpkgs, devenv, systems, rust-overlay, ... } @ inputs:
     let
       forEachSystem = nixpkgs.lib.genAttrs (import systems);
     in
@@ -23,7 +24,13 @@
       devShells = forEachSystem
         (system:
           let
-            pkgs = nixpkgs.legacyPackages.${system};
+            overlays = [(import rust-overlay)];
+            pkgs = import nixpkgs {inherit system overlays;};
+            rustpkg = pkgs.rust-bin.selectLatestNightlyWith (toolchain:
+              toolchain.default.override {
+              extensions = ["rust-src" "rustfmt" "clippy"]; # rust-src for rust-analyzer
+              targets = ["x86_64-unknown-linux-gnu" "riscv32i-unknown-none-elf"];
+            });
           in
           {
             default = devenv.lib.mkShell {
@@ -33,7 +40,7 @@
                   env."CHISEL_FIRTOOL_PATH" = "${pkgs.circt}/bin";
                   languages.scala.enable = true;
                   languages.scala.package = pkgs.scala_2_12;
-                  packages = [pkgs.mill];
+                  packages = [pkgs.mill rustpkg pkgs.rocmPackages.llvm.llvm pkgs.toybox pkgs.python313];
                 }
               ];
             };

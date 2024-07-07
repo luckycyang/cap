@@ -17,7 +17,7 @@ object TopMain extends App {
       require(value != "")
       value.substring(key.length() + 1)
     }
-    circt.stage.ChiselStage.emitSystemVerilogFile(new top.TestTopModule(""), Array("-td", "build"), Array("--strip-debug-info"))
+    circt.stage.ChiselStage.emitSystemVerilogFile(new top.TestTopModule("target/apps/test.hex"), Array("-td", "build"), Array("--strip-debug-info"))
     // generateVerilog(new peripheral.ROMLoader(128))
     
 }

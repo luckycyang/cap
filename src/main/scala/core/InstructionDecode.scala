@@ -77,7 +77,7 @@ object InstructionsTypeR {
 }
 
 /**
-  * M 型乘法指令的功能字
+  * M 乘法指令的功能字
   */
 object InstructionsTypeM {
   val mul    = 0.U

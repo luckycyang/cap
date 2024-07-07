@@ -4,6 +4,9 @@ import settings.Settings
 import peripheral._
 import core.CPU
 class TestTopModule(exeFilename: String) extends Module {
+  /**
+    * 测试线
+    */
   val io = IO(new Bundle {
     val mem_debug_read_address  = Input(UInt(Settings.AddrWidth))
     val regs_debug_read_address = Input(UInt(Settings.PhysicalRegisterAddrWidth))
@@ -11,7 +14,7 @@ class TestTopModule(exeFilename: String) extends Module {
     val mem_debug_read_data     = Output(UInt(Settings.DataWidth))
   })
 
-  val mem             = Module(new Memory(8192))
+  val mem             = Module(new Memory(Settings.MemorySizeInWords))
   val instruction_rom = Module(new InstructionROM(exeFilename))
   val rom_loader      = Module(new ROMLoader(instruction_rom.capacity))
 
@@ -19,6 +22,9 @@ class TestTopModule(exeFilename: String) extends Module {
   rom_loader.io.load_address := Settings.EntryAddress
   instruction_rom.io.address := rom_loader.io.rom_address
 
+  /**
+    * CPU 时钟分频
+    */
   val CPU_clkdiv = RegInit(UInt(2.W), 0.U)
   val CPU_tick   = Wire(Bool())
   val CPU_next   = Wire(UInt(2.W))
