@@ -9,7 +9,8 @@ class CPUBasic extends AnyFlatSpec with ChiselScalatestTester {
   it should "TopCPU" in {
     test(new top.TestTopModule("target/apps/test.hex")).withAnnotations(Seq(WriteVcdAnnotation)) {
       dut => {
-         dut.io.mem_debug_read_address.poke(0x1000.U)
+         dut.io.mem_debug_read_address.poke(1000.U)
+         dut.io.regs_debug_read_address.poke(11.U)
         dut.clock.step(128)
       }
     }

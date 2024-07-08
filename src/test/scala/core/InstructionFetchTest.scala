@@ -8,7 +8,7 @@ class InstructionFetchTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior.of("InstructionFetch of Single Cycle CPU")
   it should "fetch instruction" in {
     test(new InstructionFetch).withAnnotations(Seq(WriteVcdAnnotation)) { c =>
-      val entry = 0x1000
+      val entry = 0x0000
       var pre   = entry
       var cur   = pre
       c.io.instruction_valid.poke(true.B)
