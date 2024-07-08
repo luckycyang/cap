@@ -1,7 +1,16 @@
 #![no_std]
 #![no_main]
+#![feature(lang_items)]
 
-use panic_halt as _;
+#[lang = "eh_personality"]
+extern "C" fn eh_personality() {}
+
+use core::panic::PanicInfo;
+
+#[panic_handler]
+fn panic(_panic: &PanicInfo<'_>) -> ! {
+    loop {}
+}
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {

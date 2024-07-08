@@ -12,38 +12,42 @@
     extra-substituters = "https://devenv.cachix.org";
   };
 
-  outputs = { self, nixpkgs, devenv, systems, rust-overlay, ... } @ inputs:
-    let
-      forEachSystem = nixpkgs.lib.genAttrs (import systems);
-    in
-    {
-      packages = forEachSystem (system: {
-        devenv-up = self.devShells.${system}.default.config.procfileScript;
-      });
+  outputs = {
+    self,
+    nixpkgs,
+    devenv,
+    systems,
+    rust-overlay,
+    ...
+  } @ inputs: let
+    forEachSystem = nixpkgs.lib.genAttrs (import systems);
+  in {
+    packages = forEachSystem (system: {
+      devenv-up = self.devShells.${system}.default.config.procfileScript;
+    });
 
-      devShells = forEachSystem
-        (system:
-          let
-            overlays = [(import rust-overlay)];
-            pkgs = import nixpkgs {inherit system overlays;};
-            rustpkg = pkgs.rust-bin.selectLatestNightlyWith (toolchain:
-              toolchain.default.override {
-              extensions = ["rust-src" "rustfmt" "clippy"]; # rust-src for rust-analyzer
-              targets = ["x86_64-unknown-linux-gnu" "riscv32i-unknown-none-elf"];
-            });
-          in
-          {
-            default = devenv.lib.mkShell {
-              inherit inputs pkgs;
-              modules = [
-                {
-                  env."CHISEL_FIRTOOL_PATH" = "${pkgs.circt}/bin";
-                  languages.scala.enable = true;
-                  languages.scala.package = pkgs.scala_2_12;
-                  packages = [pkgs.mill rustpkg pkgs.rocmPackages.llvm.llvm pkgs.toybox pkgs.python313];
-                }
-              ];
-            };
+    devShells =
+      forEachSystem
+      (system: let
+        overlays = [(import rust-overlay)];
+        pkgs = import nixpkgs {inherit system overlays;};
+        rustpkg = pkgs.rust-bin.selectLatestNightlyWith (toolchain:
+          toolchain.default.override {
+            extensions = ["rust-src" "rustfmt" "clippy"]; # rust-src for rust-analyzer
+            targets = ["x86_64-unknown-linux-gnu" "riscv32i-unknown-none-elf"];
           });
-    };
+      in {
+        default = devenv.lib.mkShell {
+          inherit inputs pkgs;
+          modules = [
+            {
+              env."CHISEL_FIRTOOL_PATH" = "${pkgs.circt}/bin";
+              languages.scala.enable = true;
+              languages.scala.package = pkgs.scala_2_12;
+              packages = [pkgs.mill rustpkg pkgs.rocmPackages.llvm.llvm pkgs.toybox pkgs.python313 pkgs.cargo-binutils pkgs.coreboot-toolchain.riscv];
+            }
+          ];
+        };
+      });
+  };
 }

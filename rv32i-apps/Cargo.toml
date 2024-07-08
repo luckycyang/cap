@@ -4,4 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-panic-halt = "0.2.0"
+
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
