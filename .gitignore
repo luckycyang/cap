@@ -10,3 +10,7 @@ project
 test_run_dir
 build
 .direnv
+*.o
+*.elf
+*.hex
+*.bin
