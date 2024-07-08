@@ -31,6 +31,7 @@ class InstructionFetch extends Module {
     val instruction         = Output(UInt(Settings.InstructionWidth))
   })
   val pc = RegInit(ProgramCounter.EntryAddress)
+  printf("当前的PC: %d", pc)
 
   when(io.instruction_valid) {
     io.instruction := io.instruction_read_data

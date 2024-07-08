@@ -15,23 +15,6 @@ class ExecuteTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior.of("Execution of Single Cycle CPU")
   it should "execute correctly" in {
     test(new Execute).withAnnotations(Seq(WriteVcdAnnotation)) { c =>
-      c.io.instruction.poke(0x4011_01b3L.U) // x3 =  x2 - x1
-
-      var x = 0
-      for (x <- 0 to 100) {
-        val op1    = scala.util.Random.nextInt(16)
-        val op2    = scala.util.Random.nextInt(16)
-        val result = op1 - op2
-        val addr   = scala.util.Random.nextInt(32)
-
-        c.io.reg1_data.poke(op1.U)
-        c.io.reg2_data.poke(op2.U)
-
-        c.clock.step()
-        // c.io.mem_alu_result.expect(result.U)
-        c.io.if_jump_flag.expect(0.U)
-      }
-
       // beq test
       c.io.instruction.poke(0x00208163L.U) // pc + 2 if x1 === x2
       c.io.instruction_address.poke(2.U)
@@ -53,6 +36,24 @@ class ExecuteTest extends AnyFlatSpec with ChiselScalatestTester {
       c.clock.step()
       c.io.if_jump_flag.expect(0.U)
       c.io.if_jump_address.expect(4.U)
+
+      c.io.aluop1_source.poke(0.U)
+      c.io.aluop2_source.poke(0.U)
+
+      // add
+      c.io.instruction.poke(0x00000033.U)
+      c.io.reg1_data.poke(114)
+      c.io.reg2_data.poke(514)
+      c.clock.step(1)
+      // sub
+      c.io.instruction.poke(0x40000033.U)
+      c.clock.step(1)
+      // xor
+      c.io.instruction.poke(0x00004033.U)
+      c.io.reg1_data.poke(0.U)
+      c.io.reg2_data.poke(1.U)
+      c.clock.step(1)
+
     }
   }
 }

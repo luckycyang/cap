@@ -54,14 +54,15 @@ class MemoryAccess extends Module {
       */
     val memory_bundle = Flipped(new RAMBundle)
   })
-  // 32 位机 就是 alu_result[3..0]
+  // 32 位机 就是 alu_result[1..0]
   val mem_address_index = io.alu_result(log2Up(Settings.WordSize) - 1, 0).asUInt
+  // printf("alu_result: %d, index: %d\n", io.alu_result, mem_address_index)
 
   // 默认写失能
   io.memory_bundle.write_enable := false.B
   // 默认数据 0.U(DataWidth)
   io.memory_bundle.write_data   := 0.U
-  // 默认写地址 = alu_result
+  // 默认地址 = alu_result
   io.memory_bundle.address      := io.alu_result
   // 掩码失效， false对应写无效
   io.memory_bundle.write_strobe := VecInit(Seq.fill(Settings.WordSize)(false.B))

@@ -14,6 +14,7 @@ class InstructionFetchTest extends AnyFlatSpec with ChiselScalatestTester {
       c.io.instruction_valid.poke(true.B)
       var x = 0
       for (x <- 0 to 100) {
+        c.io.instruction_read_data.poke(x.U)
         Random.nextInt(2) match {
           case 0 => // no jump
             cur = pre + 4

@@ -7,7 +7,7 @@ import firrtl.annotations.MemoryLoadFileType
 class BaseTest extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "Peripheral Test"
   it should "BlockRam" in {
-    test(new BlockRAM(8192)).withAnnotations(Seq(WriteVcdAnnotation)) {
+    test(new BlockRAM(16)).withAnnotations(Seq(WriteVcdAnnotation)) {
       dut => {
         // todo
         for (i <- 0 to 100 by 4) {
