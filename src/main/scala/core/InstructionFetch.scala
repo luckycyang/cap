@@ -35,10 +35,8 @@ class InstructionFetch extends Module {
 
   when(io.instruction_valid) {
     io.instruction := io.instruction_read_data
-    // lab3(InstructionFetch) begin
+    // printf("当前PC值: %d \n 当前ins: %d \n", pc, io.instruction)
     pc := Mux(io.jump_flag_id, io.jump_address_id,io.instruction_address + Settings.WordSize.U)
-
-    // lab3(InstructionFetch) end
   }.otherwise {
     pc := pc
     io.instruction := 0x0000_0013.U

@@ -7,12 +7,12 @@ int fib(int n) {
 }
 
 /**
- * 递归版本斐波那契, 计算 5 的结果
+ * 递归版本斐波那契, 计算 10 的结果
  */
 int main() {
   int *result;
   result = (int *)0x1600; // 结果输出 0X1600
-  *result = fib(5);
+  *result = fib(10);
   for (;;) {
   } // Man
   return 0;

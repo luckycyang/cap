@@ -15,10 +15,14 @@ LDFLAGS=-melf32lriscv
 %.bin: %.elf
 	$(OBJCOPY) $(OBJCOPYFLAGS)  $< $@
 
-bins = fib.bin \
-			 fibn.bin \
-			 quicksort.bin
-all: $(bins)
+hex = fib.hex \
+			 fibn.hex \
+			 quicksort.hex
+
+%.hex: %.bin
+	python ../scripts/bin2memh.py $< $@
+			 
+all: $(hex)
 clean:
 	rm -f *.o
 	rm -f *.bin
