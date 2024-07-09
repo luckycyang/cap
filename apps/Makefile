@@ -16,7 +16,8 @@ LDFLAGS=-melf32lriscv
 	$(OBJCOPY) $(OBJCOPYFLAGS)  $< $@
 
 bins = fib.bin \
-			 fibn.bin
+			 fibn.bin \
+			 quicksort.bin
 all: $(bins)
 clean:
 	rm -f *.o

@@ -7,7 +7,7 @@ import firrtl.annotations.MemoryLoadFileType
 class CPUBasic extends AnyFlatSpec with ChiselScalatestTester {
   behavior of "TopCPU Basic Test"
   it should "TopCPU" in {
-    test(new top.TestTopModule("apps/fib.hex")).withAnnotations(Seq(WriteVcdAnnotation)) {
+    test(new top.TestTopModule("apps/quicksort.hex")).withAnnotations(Seq(WriteVcdAnnotation)) {
       dut => {
         dut.clock.setTimeout(0)
         dut.clock.step(1)
