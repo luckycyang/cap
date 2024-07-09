@@ -9,7 +9,7 @@ int main() {
     n2 = n3;
   }
   int *result;
-  result = (int *)0x1504; // 结果输出至 0x1004
+  result = (int *)0x1600; // 结果输出至 0x1600
   *result = n3;
   for (;;) {
   } // Man

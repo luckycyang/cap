@@ -1,4 +1,4 @@
 .text
 .globl main
-lui x2, 8192
+lui x2, 4096
 call main
