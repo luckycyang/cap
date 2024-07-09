@@ -11,7 +11,7 @@ LDFLAGS=-melf32lriscv
 
 %.elf: %.c init.o
 	$(CC) $(CFLAGS) -c -o $(@:.elf=.o) $<
-	$(CROSS_COMPILE)ld -o $@  $(LDFLAGS) init.o $(@:.elf=.o) 
+	$(CROSS_COMPILE)ld -o $@  $(LDFLAGS) init.o $(@:.elf=.o) -Tlinker.ld
 %.bin: %.elf
 	$(OBJCOPY) $(OBJCOPYFLAGS)  $< $@
 
