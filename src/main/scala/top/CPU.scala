@@ -22,10 +22,9 @@ class TestTopModule(exeFilename: String) extends Module {
 
   val CPU_clkdiv = RegInit(UInt(2.W), 0.U)
   val CPU_tick   = Wire(Bool())
-  val CPU_next   = Wire(UInt(2.W))
-  CPU_next   := Mux(CPU_clkdiv === 3.U, 0.U, CPU_clkdiv + 1.U)
+  val init = RegInit(Bool(), true.B)
   CPU_tick   := CPU_clkdiv === 0.U
-  CPU_clkdiv := CPU_next
+  CPU_clkdiv := Mux(CPU_clkdiv === 2.U, 0.U, CPU_clkdiv + 1.U)
   withClock(CPU_tick.asClock) {
     val cpu = Module(new CPU)
     cpu.io.debug_read_address  := 0.U

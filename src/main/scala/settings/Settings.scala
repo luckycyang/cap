@@ -144,7 +144,7 @@ object Settings {
     * 0x1 开始才是复位程序入口
     * @return
     */
-  def EntryAddress = 0x0000.U(Settings.AddrWidth)
+  def EntryAddress = 0x1000.U(Settings.AddrWidth)
 
   /**
     * 设备数量

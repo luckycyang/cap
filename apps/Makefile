@@ -15,14 +15,8 @@ LDFLAGS=-melf32lriscv
 %.bin: %.elf
 	$(OBJCOPY) $(OBJCOPYFLAGS)  $< $@
 
-BINS = \
-	fib.bin
-
-
-
-
-
-bins = fib.bin
+bins = fib.bin \
+			 fibn.bin
 all: $(bins)
 clean:
 	rm -f *.o
